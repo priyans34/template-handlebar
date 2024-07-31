@@ -1,8 +1,7 @@
-// main.js
 const Handlebars = require("./handlebarsHelpers");
 
-const context = {
-  myArray: ["Hello", "world", "India", "world"],
+const data = {
+  myArray: ["Hello", "world", "India", "world", "Hello", "My"],
   separator: "-",
   sentence: "Hello world!",
   user1: {
@@ -27,152 +26,131 @@ const context = {
     { Name: "Jane Doe", Age: 25, Occupation: "Designer" },
     { Name: "Jim Beam", Age: 35, Occupation: "Manager" },
   ],
+  date1: "20111031",
+  date2: "20240731",
 };
 
 const templateSource = `
-capitalize: {{capitalize sentence}}
-upperCaes:  {{upperCase sentence}}
-lowecase:   {{lowerCase sentence}}
-ucFirst:    {{ucfirst sentence}}
-lcFirst:    {{lcfirst sentence}}
 
-CamelCase: {{camelCase sentence}}
-KebabCase: {{kebabCase sentence}}
-SnakeCase: {{snakeCase sentence}}
-
-replace:     {{replace sentence "world" "Handlebars"}}
-replcaeALL:  {{replaceAll "Hello World World" "World" "Universe"}}
-
-uniqueItems: {{uniqueItems myArray}}
-escape: {{escape "<div>hello</div>"}}
-split: {{split "1,2,3,4,5" "3"}}
-join: {{join myArray "---"}}
-sum: {{sum 1 2 3 4 5}}
-random: {{random 1 100}}
-max: {{max num}}
-min: {{min (split "1,2,3,4,5" ",")}}
-Size: {{size myArray}}
-repeat: {{repeat "hello" 3}}
-Event Date: {{formatDate eventDate "MMMM Do YYYY, h:mm:ss a"}}
+[[ol myArray]]
+[[ul myArray]]
 
 
 
-filterCollection:  {{filterCollection users "active"}}
-FindInCollection:  {{findInCollection users condition='{"active": false}'}}
-
-Trimmed: "{{trim inputString}}"
-
-<p>Truncated (15 chars, word break, custom ending): "{{truncate inputString 15 '...' true}}"</p>
-<p>Truncated (15 chars, no word break, custom ending): "{{truncate inputString 15 '...' false}}"</p>
+[[#list users]]
+  [[this.name]]
+[[/list]]
 
 
 
+[[table users]]
 
 
+capitalize: [[capitalize sentence]]
+upperCaes:  [[upperCase sentence]]
+lowecase:   [[lowerCase sentence]]
+ucFirst:    [[ucfirst sentence]]
+lcFirst:    [[lcfirst sentence]]
+CamelCase: [[camelCase sentence]]
+KebabCase: [[kebabCase sentence]]
+SnakeCase: [[snakeCase sentence]]
+replace:     [[replace "Hello world world" "world" "Handlebars"]]
+replcaeALL:  [[replaceAll "Hello world world" "world" "Handlebars"]]
+uniqueItems: [[uniqueItems myArray]]
+escape: [[escape "<div>hello</div>"]]
+split: [[split "Hello World" "e"]]
+join: [[join myArray "---"]]
+sum: [[sum 1 2 3 4 5 6]]
+random: [[random 1 1000]]
+max: [[max num]]
+min: [[min num]]
+Size: [[size users]]
+now: [[now "toISO"]]
+jsonStringfy: [[jsonStringify user1]]
 
-  <p>jsonStringfy: {{{jsonStringify user1}}}</p>
+repeat: [[repeat "hello" "3"]]
+Event Date: [[formatDate eventDate "MMMM Do YYYY, h:mm:ss a"]]
 
-  <p>now: {{now "toISO"}}</p>
+filterCollection:  [[filterCollection users "active=true"]]
+FindInCollection:  [[findInCollection users "name=Jim"]]
 
-  <p>uuid: {{uuid}}</p>
+Trimmed: [[trim inputString]]
+[[trim "   Hello, World!   "]]
+[[trim ">>>Hello, World!<<<" ">>><<"]]
 
 
-  ifequal:
-  {{#ifEqual user1 user2}}
-    Values are equal.
-  {{else}}
-    Values are not equal.
-  {{/ifEqual}}
+<p>Truncated (15 chars, word break, custom ending): [[truncate inputString 15 '...' true]]</p>
+<p>Truncated (15 chars, no word break, custom ending): [[truncate inputString "15" ""]]</p>
+[[startsWith "Hello World" "hello"]]
 
-ifnotequal:
-{{#ifNotEqual "a" "b"}}
-  Values are not equal.
-{{else}}
-  Values are equal.
-{{/ifNotEqual}}
+<p>uuid: [[uuid]]</p>
+
+[[#and (startsWith "Hello World" "Hello") (startsWith "Hello World" "Hello") ]]
+[[/and]]
+
 
 and: 
-{{#if (and true false)}}
+[[#if (and true false)]]
   Both are true.
-{{else}}
+[[else]]
   At least one is false.
-{{/if}}
+[[/if]]
+
 
 or: 
-{{#if (or false true)}}
+[[#if (or false true)]]
   At least one is true.
-{{else}}
+[[else]]
   Both are false.
-{{/if}}
+[[/if]]
 
+
+[[contains "Hello World" "Hello"]]
 
 contains: 
-{{#if (contains "hello world" "world")}}
+[[#if (contains "hello world" "world")]]
   String contains "world".
-{{else}}
+[[else]]
   String does not contain "world".
-{{/if}}
+[[/if]]
+
+tofixed: [[toFixed 3.14159 2]]
+
+formatDate: ........ [[formatDate "2024-07-23" "MMMM DD YYYY"]]
+[[formatDate "2024-07-22" 'L']]
+[[diffDate date1 date2 'years']]
+addDays      [[addDays "01/01/2022" "DD/MM/YYYYY" 5]]
+subDays      [[subtractDays "01-01-2022" "DD-MM-YYYYY" 5]]
+fromNow:    [[fromNow "2022-01-01"]] 
+
+<p>[[encodeURI "https://example.com/path?name=Priyanshu Singh"]]</p>
+
+<p>[[endsWith "Hello World" "World"]]</p>
 
 
-{{toFixed 3.14159 2}}
+[[#list myArray]][[this]][[/list]]
 
-{{formatDate "2024-07-23" "MMMM DD YYYY"}}
+{{#hello}}
+  {{firstname}} {{lastname}}
+{{/hello}}
 
-{{default user.name "Guest"}}
-
-
-
-<p>{{safeHTML "<strong>Bold Text</strong>"}}</p>
-<p>{{encodeURI "https://example.com/path?name=Priyanshu Singh"}}</p>
-<p>{{escapeAttribute 'He said, "Hello!"'}}</p>
-<p>{{startsWith "Hello World" "Hello"}}</p>
-<p>{{endsWith "Hello World" "World"}}</p>
-
-<p>{{fromNow "2022-01-01"}}</p>
-<p>{{addDays "2022-01-01" 5}}</p>
-
-
-{{#list myArray}}{{this}}{{/list}}
-
-
-
-{{ol myArray}}
-
-{{{ul myArray}}}
-
-{{italic "Italic Text"}}
-{{bold "Bold Text"}}
-
-
-
-
-{{#if isActive}}
-  <p>Welcome back!</p>
-{{else}}
-  <p>Please log in.</p>
-{{/if}}
-
-
-{{#unless isActive}}
-  <p>Please log in.</p>
-{{/unless}}
-
-
-
-{{table rows}}
-
-
-
-
+[[priyanshu]]
 
 `;
 
-// Compile the template
-const template = Handlebars.compile(templateSource);
+function replaceDelimiters(template, openDelim, closeDelim) {
+  const openDelimRegex = new RegExp(openDelim, "g");
+  const closeDelimRegex = new RegExp(closeDelim, "g");
+  return template.replace(openDelimRegex, "{{").replace(closeDelimRegex, "}}");
+}
+const handlebarsTemplateSource = replaceDelimiters(
+  templateSource,
+  "\\[\\[",
+  "\\]\\]"
+);
 
-// Generate HTML using the template and some context
-const result = template(context);
-console.log(typeof result);
+const template = Handlebars.compile(handlebarsTemplateSource);
 
-// Log the result
+const result = template(data);
+
 console.log(result);

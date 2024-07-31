@@ -3,280 +3,6 @@ const _ = require("lodash");
 const moment = require("moment");
 const { v4: uuidv4 } = require("uuid");
 
-
-Handlebars.registerHelper("capitalize", function (str) {
-  return _.capitalize(str);
-});
-
-Handlebars.registerHelper("repeat", function (str, times) {
-  return str.repeat(times);
-});
-
-Handlebars.registerHelper("camelCase", function (str) {
-  return _.camelCase(str);
-});
-
-Handlebars.registerHelper("kebabCase", function (str) {
-  return _.kebabCase(str);
-});
-
-Handlebars.registerHelper("snakeCase", function (str) {
-  return _.snakeCase(str);
-});
-
-Handlebars.registerHelper("upperCase", function (str) {
-  return _.toUpper(str);
-});
-
-Handlebars.registerHelper("lowerCase", function (str) {
-  return _.toLower(str);
-});
-
-Handlebars.registerHelper("ucfirst", function (str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-});
-
-Handlebars.registerHelper("lcfirst", function (str) {
-  return str.charAt(0).toLowerCase() + str.slice(1);
-});
-
-Handlebars.registerHelper("replace", function (str, search, replace) {
-  return str.replace(new RegExp(search, "g"), replace);
-});
-
-Handlebars.registerHelper("replaceAll", function (str, search, replacement) {
-  return str.split(search).join(replacement);
-});
-
-Handlebars.registerHelper("startsWith", function (str, prefix) {
-  return str.startsWith(prefix);
-});
-
-Handlebars.registerHelper("endsWith", function (str, suffix) {
-  return str.endsWith(suffix);
-});
-
-
-Handlebars.registerHelper("uniqueItems", function (array) {
-  const arr = _.uniq(array);
-  return arr;
-});
-
-Handlebars.registerHelper("split", function (str, separator) {
-  return _.split(str, separator);
-});
-
-Handlebars.registerHelper("join", function (array, separator) {
-  return _.join(array, separator);
-});
-
-Handlebars.registerHelper("sum", function (...args) {
-  args.pop();
-  return _.sum(args.map(Number));
-});
-
-Handlebars.registerHelper("random", function (min, max) {
-  const random = Math.floor(Math.random() * (max - min + 1)) + min;
-  return random;
-});
-
-Handlebars.registerHelper("max", function (array) {
-  return _.max(array);
-});
-
-Handlebars.registerHelper("min", function (array) {
-  return _.min(array);
-});
-
-
-Handlebars.registerHelper("map", function (array, fn) {
-  return array.map(fn);
-});
-
-Handlebars.registerHelper("filterCollection",function (array, condition, options) {
-    if (!Array.isArray(array)) {
-      throw new Error("First argument must be an array");
-    }
-
-    const filterVal = _.isPlainObject(condition)
-      ? condition
-      : { [condition]: true };
-      const result = _.filter(array, filterVal);
-
-      // Convert result to JSON string for display purposes
-      return new Handlebars.SafeString(JSON.stringify(result));
-  }
-);
-
-// Logic Helpers
-Handlebars.registerHelper("ifEqual", function (a, b, options) {
-  return _.isEqual(a, b) ? options.fn(this) : options.inverse(this);
-});
-
-Handlebars.registerHelper("ifNotEqual", function (a, b, options) {
-  return !_.isEqual(a, b) ? options.fn(this) : options.inverse(this);
-});
-
-Handlebars.registerHelper("and", function (a, b) {
-  return a && b;
-});
-
-Handlebars.registerHelper("or", function (a, b) {
-  return a || b;
-});
-
-Handlebars.registerHelper("contains", function (str, substring) {
-  return str.includes(substring);
-});
-
-Handlebars.registerHelper("default", function (value, defaultValue) {
-  return value != null ? value : defaultValue;
-});
-
-// Date and Time Helpers
-Handlebars.registerHelper("now", function (format) {
-  const date = new Date();
-  switch (format) {
-    case "toDate":
-      return date.toDateString();
-    case "toGMT":
-      return date.toGMTString();
-    case "toUTC":
-      return date.toUTCString();
-    case "toISO":
-      return date.toISOString();
-    case "toTime":
-      return date.toTimeString();
-    default:
-      return date.getTime();
-  }
-});
-
-Handlebars.registerHelper("fromNow", function (date) {
-  return moment(date).fromNow();
-});
-
-Handlebars.registerHelper("addDays", function (date, days) {
-  return moment(date).add(days, "days").format("YYYY-MM-DD");
-});
-
-Handlebars.registerHelper("formatDate", function (date, format) {
-  return moment(date).format(format);
-});
-
-Handlebars.registerHelper("toFixed", function (number, decimals) {
-  return number.toFixed(decimals);
-});
-
-Handlebars.registerHelper("safeHTML", function (html) {
-  return new Handlebars.SafeString(html);
-});
-
-Handlebars.registerHelper("encodeURI", function (str) {
-  return encodeURI(str);
-});
-
-Handlebars.registerHelper("escapeAttribute", function (str) {
-  return str.replace(/"/g, "&quot;");
-});
-
-Handlebars.registerHelper("escape", function (str) {
-  return _.escape(str);
-});
-
-Handlebars.registerHelper("jsonStringify", function (obj) {
-  return JSON.stringify(obj);
-});
-
-Handlebars.registerHelper("uuid", function () {
-  return uuidv4();
-});
-
-Handlebars.registerHelper("list", function (items, options) {
-  const itemsAsHtml = items.map((item) => "<li>" + options.fn(item) + "</li>");
-  return "<ul>\n" + itemsAsHtml.join("\n") + "\n</ul>";
-});
-
-Handlebars.registerHelper("ol", function (items) {
-  let out = "<ol>\n";
-  items.forEach((item) => {
-    const escapedItem = Handlebars.escapeExpression(item);
-    out += `  <li>${escapedItem}</li>\n`;
-  });
-  out += "</ol>";
-  return new Handlebars.SafeString(out);
-});
-
-
-Handlebars.registerHelper("ul", function (items) {
-  let out = "<ul>\n";
-  items.forEach((item) => {
-    const escapedItem = Handlebars.escapeExpression(item);
-    out += `  <li>${escapedItem}</li>\n`;
-  });
-  out += "</ul>";
-  return new Handlebars.SafeString(out);
-});
-
-Handlebars.registerHelper("italic", function (text) {
-  const escapedText = Handlebars.escapeExpression(text);
-  return new Handlebars.SafeString(`<i>${escapedText}</i>`);
-});
-
-Handlebars.registerHelper("bold", function (text) {
-  const escapedText = Handlebars.escapeExpression(text);
-  return new Handlebars.SafeString(`<b>${escapedText}</b>`);
-});
-
-Handlebars.registerHelper("size", function (array) {
-  if (!Array.isArray(array)) {
-    throw new Error("Argument must be an array");
-  }
-  return _.size(_.flatten(array));
-});
-
-Handlebars.registerHelper("findInCollection", function (array, options) {
-  if (!Array.isArray(array)) {
-    throw new Error("First argument must be an array");
-  }
-
-  // Parse the condition from options.hash
-  const condition = JSON.parse(options.hash.condition);
-  console.log("condition", condition);
-
-  // Find the item in the array that matches the condition
-  const result =  _.find(array, condition);
-  return new Handlebars.SafeString(JSON.stringify(result));
-});
-
-Handlebars.registerHelper("trim", function (string, chars) {
-  return _.trim(string, chars || " \t\v\n\r\0");
-});
-Handlebars.registerHelper(
-  "truncate",
-  function (string, length, ending, wordBreak) {
-    if(typeof ending === 'object') {
-      wordBreak = true;
-      ending = '...';
-    }
-  
-    if (string.length <= length) {
-      return string;
-    }
-
-    if (wordBreak) {
-      return string.slice(0, length) + ending;
-    } else {
-      let truncated = string.slice(0, length);
-      let lastSpaceIndex = truncated.lastIndexOf(" ");
-      if (lastSpaceIndex > -1) {
-        truncated = truncated.slice(0, lastSpaceIndex);
-      }
-      return truncated + ending;
-    }
-  }
-);
-
 Handlebars.registerHelper("table", function (rows, options) {
   if (!Array.isArray(rows)) {
     throw new Error("First argument must be an array of rows");
@@ -285,6 +11,20 @@ Handlebars.registerHelper("table", function (rows, options) {
   let tableHtml = '<table border="1">';
 
   if (rows.length > 0) {
+    rows.forEach((row, index) => {
+      if (typeof row === "string") {
+        try {
+          const correctedRow = row
+            .replace(/(\w+):/g, '"$1":')
+            .replace(/'/g, '"');
+
+          rows[index] = JSON.parse(correctedRow);
+        } catch (e) {
+          rows[index] = {};
+        }
+      }
+    });
+
     const headers = Object.keys(rows[0]);
     tableHtml += "<thead><tr>";
     headers.forEach((header) => {
@@ -308,6 +48,426 @@ Handlebars.registerHelper("table", function (rows, options) {
   return new Handlebars.SafeString(tableHtml);
 });
 
+Handlebars.registerHelper("capitalize", function (str) {
+  if (!str || typeof str !== "string") {
+    throw new Error("Invalid input string");
+  }
+  return _.capitalize(str);
+});
 
+Handlebars.registerHelper("repeat", function (str, times) {
+  if (!str || !times || typeof str !== "string" || isNaN(times)) {
+    throw new Error("Invalid input");
+  }
+  return str.repeat(times);
+});
 
+Handlebars.registerHelper("camelCase", function (str) {
+  if (!str || typeof str !== "string") {
+    throw new Error("Invalid input string");
+  }
+  return _.camelCase(str);
+});
+
+Handlebars.registerHelper("kebabCase", function (str) {
+  if (!str || typeof str !== "string") {
+    throw new Error("Invalid input string");
+  }
+  return _.kebabCase(str);
+});
+
+Handlebars.registerHelper("snakeCase", function (str) {
+  if (!str || typeof str !== "string") {
+    throw new Error("Invalid input string");
+  }
+  return _.snakeCase(str);
+});
+
+Handlebars.registerHelper("upperCase", function (str) {
+  if (typeof str !== "string") {
+    throw new Error("Invalid input");
+  }
+  return _.toUpper(str);
+});
+
+Handlebars.registerHelper("lowerCase", function (str) {
+  if (typeof str !== "string") {
+    throw new Error("Invalid input");
+  }
+  return _.toLower(str);
+});
+
+Handlebars.registerHelper("replace", function (str, search, replace) {
+  if (!str || !search || !replace) {
+    throw new Error("Invalid arguments");
+  }
+  return _.replace(str, search, replace);
+});
+
+Handlebars.registerHelper("replaceAll", function (str, search, replacement) {
+  return String(str).replaceAll(search, replacement);
+});
+
+Handlebars.registerHelper("startsWith", function (str, prefix) {
+  if (
+    !str ||
+    !prefix ||
+    typeof str !== "string" ||
+    typeof prefix !== "string"
+  ) {
+    throw new Error("Invalid input");
+  }
+  return str.startsWith(prefix);
+});
+
+Handlebars.registerHelper("endsWith", function (str, suffix) {
+  if (
+    !str ||
+    !suffix ||
+    typeof str !== "string" ||
+    typeof suffix !== "string"
+  ) {
+    throw new Error("Invalid input");
+  }
+  return str.endsWith(suffix);
+});
+
+Handlebars.registerHelper("uniqueItems", function (array) {
+  if (!Array.isArray(array)) {
+    throw new Error("Argument must be an array");
+  }
+  if (array.length === 0) {
+    throw new Error("Invalid input");
+  }
+  const arr = _.uniq(array);
+  return arr;
+});
+
+Handlebars.registerHelper("split", function (str, separator) {
+  if (
+    !str ||
+    !separator ||
+    typeof str !== "string" ||
+    typeof separator !== "string"
+  ) {
+    throw new Error("Invalid input");
+  }
+  return _.split(str, separator);
+});
+
+Handlebars.registerHelper("join", function (array, separator) {
+  if (!Array.isArray(array) || typeof separator !== "string") {
+    throw new Error("Invalid input");
+  }
+  return _.join(array, separator);
+});
+
+Handlebars.registerHelper("sum", function (...args) {
+  args.pop();
+  const sum = args.reduce((acc, val) => {
+    return acc + val;
+  }, 0);
+  return sum;
+});
+
+Handlebars.registerHelper("random", function (min, max) {
+  if (!min || !max) {
+    throw new Error("Invalid arguments");
+  }
+  return _.random(Number(min), Number(max));
+});
+
+Handlebars.registerHelper("max", function (array) {
+  if (array.length == 0) {
+    throw new Error("Invalid input");
+  }
+  return _.max(array);
+});
+
+Handlebars.registerHelper("min", function (array) {
+  if (array.length == 0) {
+    throw new Error("Invalid input");
+  }
+  return _.min(array);
+});
+
+Handlebars.registerHelper("filterCollection", function (array, condition) {
+  if (!Array.isArray(array)) {
+    throw new Error("First argument must be an array");
+  }
+  if (!condition) {
+    throw new Error("Second argument must be a condition");
+  }
+
+  const [key, value] = condition.split("=");
+  let filterCondition = {};
+
+  if (value === "true") {
+    filterCondition[key] = true;
+  } else if (value === "false") {
+    filterCondition[key] = false;
+  } else if (!isNaN(value)) {
+    filterCondition[key] = Number(value);
+  } else {
+    filterCondition[key] = value;
+  }
+
+  const result = _.filter(array, filterCondition);
+  return new Handlebars.SafeString(JSON.stringify(result));
+});
+
+Handlebars.registerHelper("and", function (a, b) {
+  if (typeof a !== "boolean" || typeof b !== "boolean") {
+    throw new Error("Invalid input");
+  }
+  return a && b;
+});
+
+Handlebars.registerHelper("or", function (a, b) {
+  if (typeof a !== "boolean" || typeof b !== "boolean") {
+    throw new Error("Invalid input");
+  }
+  return a || b;
+});
+
+Handlebars.registerHelper("contains", function (str, substring) {
+  if (
+    !str ||
+    !substring ||
+    typeof str !== "string" ||
+    typeof substring !== "string"
+  ) {
+    throw new Error("Invalid input");
+  }
+  return str.includes(substring);
+});
+
+Handlebars.registerHelper("now", function (format) {
+  const date = new Date();
+  switch (format) {
+    case "toDate":
+      return date.toDateString();
+    case "toGMT":
+      return date.toGMTString();
+    case "toUTC":
+      return date.toUTCString();
+    case "toISO":
+      return date.toISOString();
+    case "toTime":
+      return date.toTimeString();
+    default:
+      return date.getTime();
+  }
+});
+
+Handlebars.registerHelper("fromNow", function (date) {
+  if (!date) {
+    throw new Error("Invalid input");
+  }
+  return moment(date).fromNow();
+});
+
+Handlebars.registerHelper("addDays", function (date, format, days) {
+  if (
+    !date ||
+    typeof days !== "number" ||
+    !format ||
+    typeof format !== "string"
+  ) {
+    throw new Error("Invalid input");
+  }
+  return moment(date, format).add(days, "days").format(format);
+});
+
+Handlebars.registerHelper("subtractDays", function (date, format, days) {
+  if (
+    !date ||
+    typeof days !== "number" ||
+    !format ||
+    typeof format !== "string"
+  ) {
+    throw new Error("Invalid input");
+  }
+  return moment(date, format).subtract(days, "days").format(format);
+});
+
+Handlebars.registerHelper("formatDate", function (date, format) {
+  if (!date) {
+    return moment().format(format);
+  }
+  return moment(date).format(format);
+});
+
+Handlebars.registerHelper("diffDate", function (date1, date2, unit) {
+  if (!date1 || !date2 || !unit) {
+    throw new Error("Invalid input");
+  }
+  const moment1 = moment(date1, "YYYYMMDD");
+  const moment2 = moment(date2, "YYYYMMDD");
+  return moment2.diff(moment1, unit);
+});
+
+Handlebars.registerHelper("toFixed", function (number, decimals) {
+  if (!number || !decimals) {
+    throw new Error("Invalid input");
+  }
+  return number.toFixed(decimals);
+});
+
+Handlebars.registerHelper("encodeURI", function (str) {
+  if (!str || typeof str !== "string") {
+    throw new Error("Invalid input");
+  }
+  return encodeURI(str);
+});
+
+Handlebars.registerHelper("escape", function (str) {
+  if (!str || typeof str !== "string") {
+    throw new Error("Invalid input");
+  }
+  return _.escape(str);
+});
+
+Handlebars.registerHelper("jsonStringify", function (obj) {
+  if (obj === null || typeof obj !== "object") {
+    throw new Error("Invalid input");
+  }
+  const result = JSON.stringify(obj);
+  return new Handlebars.SafeString(result);
+});
+
+Handlebars.registerHelper("uuid", function () {
+  return uuidv4();
+});
+
+Handlebars.registerHelper("list", function (items, options) {
+  if (!items || !Array.isArray(items)) {
+    throw new Error("Invalid input, Not an array");
+  }
+  const itemsAsHtml = items.map((item) => "<li>" + options.fn(item) + "</li>");
+  return "<ul>\n" + itemsAsHtml.join("\n") + "\n</ul>";
+});
+
+Handlebars.registerHelper("ol", function (items) {
+  if (!items || !Array.isArray(items)) {
+    throw new Error("Invalid input, Not an array");
+  }
+  let out = "<ol>\n";
+  items.forEach((item) => {
+    const escapedItem = Handlebars.escapeExpression(item);
+    out += `  <li>${escapedItem}</li>\n`;
+  });
+  out += "</ol>";
+  return new Handlebars.SafeString(out);
+});
+
+Handlebars.registerHelper("ul", function (items) {
+  if (!items || !Array.isArray(items)) {
+    throw new Error("Invalid input, Not an array");
+  }
+  let out = "<ul>\n";
+  items.forEach((item) => {
+    const escapedItem = Handlebars.escapeExpression(item);
+    out += `  <li>${escapedItem}</li>\n`;
+  });
+  out += "</ul>";
+  return new Handlebars.SafeString(out);
+});
+
+Handlebars.registerHelper("italic", function (text) {
+  if (!text || typeof text !== "string") {
+    throw new Error("Invalid input");
+  }
+  const escapedText = Handlebars.escapeExpression(text);
+  return new Handlebars.SafeString(`<i>${escapedText}</i>`);
+});
+
+Handlebars.registerHelper("bold", function (text) {
+  if (!text || typeof text !== "string") {
+    throw new Error("Invalid input");
+  }
+  const escapedText = Handlebars.escapeExpression(text);
+  return new Handlebars.SafeString(`<b>${escapedText}</b>`);
+});
+
+Handlebars.registerHelper("size", function (array) {
+  if (!Array.isArray(array)) {
+    throw new Error("Argument must be an array");
+  }
+  return _.size(_.flatten(array));
+});
+
+Handlebars.registerHelper("findInCollection", function (array, condition) {
+  if (!Array.isArray(array)) {
+    throw new Error("First argument must be an array");
+  }
+  if (!condition) {
+    throw new Error("Second argument must be a condition");
+  }
+
+  const [key, value] = condition.split("=");
+  let findCondition = {};
+
+  if (value === "true") {
+    findCondition[key] = true;
+  } else if (value === "false") {
+    findCondition[key] = false;
+  } else if (!isNaN(value)) {
+    findCondition[key] = Number(value);
+  } else {
+    findCondition[key] = value;
+  }
+
+  const result = _.find(array, findCondition);
+  return new Handlebars.SafeString(JSON.stringify(result));
+});
+
+Handlebars.registerHelper("trim", function (string, chars) {
+  if (!string || typeof string !== "string") {
+    throw new Error("Invalid input");
+  }
+  const result = _.trim(string, chars || " \t\v\n\r\0");
+  return new Handlebars.SafeString(JSON.stringify(result));
+});
+Handlebars.registerHelper(
+  "truncate",
+  function (string, length, ending, wordBreak) {
+    if (!string || !length || typeof string !== "string") {
+      throw new Error("Invalid Input");
+    }
+    if (typeof ending === "object") {
+      wordBreak = true;
+      ending = "...";
+    }
+    length = Number(length);
+    let result;
+    if (string.length <= length) {
+      result = string;
+    }
+
+    if (wordBreak) {
+      result = string.slice(0, length) + ending;
+    } else {
+      let truncated = string.slice(0, length);
+      let lastSpaceIndex = truncated.lastIndexOf(" ");
+      if (lastSpaceIndex > -1) {
+        truncated = truncated.slice(0, lastSpaceIndex);
+      }
+      result = truncated + ending;
+    }
+    return new Handlebars.SafeString(JSON.stringify(result));
+  }
+);
+
+Handlebars.registerHelper("blockHelperMissing", function () {
+  const options = arguments[arguments.length - 1];
+  const res = "Helper '" + options.name + "' not found.";
+  return new Handlebars.SafeString(res);
+});
+
+Handlebars.registerHelper("helperMissing", function () {
+  const options = arguments[arguments.length - 1];
+  const res = "Inline helper '" + options.name + "' not found.";
+  return new Handlebars.SafeString(res);
+});
 module.exports = Handlebars;
