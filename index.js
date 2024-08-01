@@ -55,20 +55,19 @@ CamelCase: [[camelCase sentence]]
 KebabCase: [[kebabCase sentence]]
 SnakeCase: [[snakeCase sentence]]
 replace:     [[replace "Hello world world" "world" "Handlebars"]]
-replcaeALL:  [[replaceAll "Hello world world" "world" "Handlebars"]]
 uniqueItems: [[uniqueItems myArray]]
 escape: [[escape "<div>hello</div>"]]
-split: [[split "Hello World" "e"]]
-join: [[join myArray "---"]]
-sum: [[sum 1 2 3 4 5 6]]
-random: [[random 1 1000]]
+split: [[split "hello world" ""]]
+join: [[join myArray ""]]
+sum: [[sum 2 3 1]]
+random: [[random 1 8]]
 max: [[max num]]
 min: [[min num]]
 Size: [[size users]]
-now: [[now "toISO"]]
+now: [[now toISO]]
 jsonStringfy: [[jsonStringify user1]]
 
-repeat: [[repeat "hello" "3"]]
+repeat: [[repeat "hello" 3]]
 Event Date: [[formatDate eventDate "MMMM Do YYYY, h:mm:ss a"]]
 
 filterCollection:  [[filterCollection users "active=true"]]
@@ -80,14 +79,51 @@ Trimmed: [[trim inputString]]
 
 
 <p>Truncated (15 chars, word break, custom ending): [[truncate inputString 15 '...' true]]</p>
-<p>Truncated (15 chars, no word break, custom ending): [[truncate inputString "15" ""]]</p>
-[[startsWith "Hello World" "hello"]]
+<p>Truncated (15 chars, no word break, custom ending): [[truncate inputString 15 ""]]</p>
 
 <p>uuid: [[uuid]]</p>
 
-[[#and (startsWith "Hello World" "Hello") (startsWith "Hello World" "Hello") ]]
-[[/and]]
+startsWIth:      [[startsWith "hello" " "]]
 
+
+
+contains  [[contains "a" "a"]]
+
+contains: 
+[[#if (contains "hello world" "world")]]
+  String contains "world".
+[[else]]
+  String does not contain "world".
+[[/if]]
+
+tofixed: [[toFixed 3.14159 2]]
+
+formatDate: ........ [[formatDate  "August 1st 2024, 1:55:36 am" 'MMMM Do YYYY, h:mm:ss a' "DD-MM-YYYY"]]
+[[formatDate  "20111031" "YYYYMMDD" "DD-MM-YYYY"]]
+
+[[formatDate 'llll']]
+  diffDate: [[diffDate "01-01-2022" "04-01-2022" "DD-MM-YYYY" 'days']]
+addDays      [[addDays "01/01/2022" "DD/MM/YYYYY" 5]]
+subDays      [[subtractDays "01-01-2022" "DD-MM-YYYYY" 5]]
+fromNow:    [[fromNow "01/08/2020" "DD/MM/YYYY"]] 
+
+<p>[[encodeURI "https://example.com/path?name=Priyanshu Singh"]]</p>
+
+<p>[[endsWith "Hello World" "World"]]</p>
+
+
+[[#list myArray]][[this]][[/list]]
+
+[[#hello]]
+  [[firstname]] [[lastname]]
+[[/hello]]
+
+[[priyanshu]]
+
+
+
+replcaeALL:  [[replaceAll "Hello world world" "world" "Handlebars"]]
+[[and (startsWith "Hello World" "Hello") (startsWith "Hello World" "Hello") ]]
 
 and: 
 [[#if (and true false)]]
@@ -103,38 +139,6 @@ or:
 [[else]]
   Both are false.
 [[/if]]
-
-
-[[contains "Hello World" "Hello"]]
-
-contains: 
-[[#if (contains "hello world" "world")]]
-  String contains "world".
-[[else]]
-  String does not contain "world".
-[[/if]]
-
-tofixed: [[toFixed 3.14159 2]]
-
-formatDate: ........ [[formatDate "2024-07-23" "MMMM DD YYYY"]]
-[[formatDate "2024-07-22" 'L']]
-[[diffDate date1 date2 'years']]
-addDays      [[addDays "01/01/2022" "DD/MM/YYYYY" 5]]
-subDays      [[subtractDays "01-01-2022" "DD-MM-YYYYY" 5]]
-fromNow:    [[fromNow "2022-01-01"]] 
-
-<p>[[encodeURI "https://example.com/path?name=Priyanshu Singh"]]</p>
-
-<p>[[endsWith "Hello World" "World"]]</p>
-
-
-[[#list myArray]][[this]][[/list]]
-
-{{#hello}}
-  {{firstname}} {{lastname}}
-{{/hello}}
-
-[[priyanshu]]
 
 `;
 
