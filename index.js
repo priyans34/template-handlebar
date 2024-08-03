@@ -27,7 +27,7 @@ const data = {
     { Name: "Jim Beam", Age: 35, Occupation: "Manager" },
   ],
   date1: "20111031",
-  date2: "20240731",
+  date2: "20240731"
 };
 
 const templateSource = `
