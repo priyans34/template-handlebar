@@ -151,7 +151,7 @@ const handlebarsTemplateSource = replaceDelimiters(
   templateSource,
   "\\[\\[",
   "\\]\\]"
-);
+)
 
 const template = Handlebars.compile(handlebarsTemplateSource);
 
