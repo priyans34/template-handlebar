@@ -28,7 +28,7 @@ const data = {
   ],
   date1: "20111031",
   date2: "20240731"
-};
+}
 
 const templateSource = `
 
